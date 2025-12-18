@@ -1,21 +1,41 @@
 //
 //  ContentView.swift
-//  SuperTask conGenius
+//  Task conGenius
 //
-//  Created by Simon Bakhanets on 18.12.2025.
+//  Created on Dec 18, 2025.
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    @State private var selectedTab = 0
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        if !hasCompletedOnboarding {
+            OnboardingView()
+        } else {
+            TabView(selection: $selectedTab) {
+                TaskListView()
+                    .tabItem {
+                        Label("Tasks", systemImage: "list.bullet")
+                    }
+                    .tag(0)
+                
+                AutomationView()
+                    .tabItem {
+                        Label("Automation", systemImage: "gearshape.2.fill")
+                    }
+                    .tag(1)
+                
+                SettingsView()
+                    .tabItem {
+                        Label("Settings", systemImage: "gearshape.fill")
+                    }
+                    .tag(2)
+            }
+            .accentColor(.appPrimary)
         }
-        .padding()
     }
 }
 
